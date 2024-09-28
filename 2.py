@@ -28,7 +28,7 @@ def manage_stock_inventory(stock_prices, accounts, eligible_accounts, eligible_f
                 if remaining_demand <= 0:
                     break
                 
-                if excess_quantity > 0 and account_dict[excess_account][1] == account_dict[demand_account][1]:
+                if excess_quantity > 0:
                     transfer_quantity = min(remaining_demand, excess_quantity)
                     movements.append((stock_id, excess_account, demand_account, transfer_quantity))
                     excesses[excess_account] -= transfer_quantity
@@ -39,7 +39,7 @@ def manage_stock_inventory(stock_prices, accounts, eligible_accounts, eligible_f
                     if remaining_demand <= 0:
                         break
                     
-                    if excess_quantity > 0 and account_dict[excess_account][1] != account_dict[demand_account][1]:
+                    if excess_quantity > 0:
                         transfer_quantity = min(remaining_demand, excess_quantity)
                         movements.append((stock_id, excess_account, demand_account, transfer_quantity))
                         excesses[excess_account] -= transfer_quantity

@@ -41,7 +41,7 @@ for _ in range(n_balances):
 # Prepare movements
 movements = []
 
-for stock_id in stocks:
+for stock_id in sorted(stocks.keys()):
     stock_balances = balances.get(stock_id, {})
     sources = {acc_id: qty for acc_id, qty in stock_balances.items() if qty > 0}
     demands = {acc_id: -qty for acc_id, qty in stock_balances.items() if qty < 0}
@@ -63,6 +63,9 @@ for stock_id in stocks:
         if remaining_demand > 0:
             # Could not satisfy demand
             pass
+
+    # Update sources after satisfying demands
+    sources = {acc_id: qty for acc_id, qty in sources.items() if qty > 0}
 
     # Handle excess stocks
     for source_acc, source_qty in sources.items():

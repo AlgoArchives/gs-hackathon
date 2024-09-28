@@ -63,7 +63,7 @@ for _ in range(n_eligible_flows):
 
 # Read balances
 n_balances = int(input().strip())
-balances = {}
+balances = {stock_id: {} for stock_id in stocks.keys()}
 for _ in range(n_balances):
     while True:
         line = input().strip()
@@ -77,6 +77,10 @@ for _ in range(n_balances):
         balances.setdefault(stock_id, {}).setdefault(account_id, 0)
         balances[stock_id][account_id] += quantity
         break
+
+# Ensure all stocks have entries in balances
+for stock_id in stocks.keys():
+    balances.setdefault(stock_id, {})
 
 # Prepare movements
 movements = []
@@ -99,16 +103,15 @@ for stock_id in sorted(stocks.keys()):
             transfer_qty = min(remaining_demand, source_qty)
             movements.append((stock_id, source_acc, demand_acc, transfer_qty))
             sources[source_acc] -= transfer_qty
+            if sources[source_acc] <= 0:
+                del sources[source_acc]
             remaining_demand -= transfer_qty
         if remaining_demand > 0:
             # Could not satisfy demand
             pass
 
-    # Update sources after satisfying demands
-    sources = {acc_id: qty for acc_id, qty in sources.items() if qty > 0}
-
     # Handle excess stocks
-    for source_acc, source_qty in sources.items():
+    for source_acc, source_qty in list(sources.items()):
         if source_qty <= 0:
             continue
         # Find triparty accounts
@@ -126,6 +129,8 @@ for stock_id in sorted(stocks.keys()):
             movements.append((stock_id, source_acc, triparty_acc, transfer_qty))
             source_qty -= transfer_qty
             sources[source_acc] = source_qty
+        if sources[source_acc] <= 0:
+            del sources[source_acc]
 
 # Sort and print the movements
 movements.sort(key=lambda x: (x[0], x[1], x[2]))

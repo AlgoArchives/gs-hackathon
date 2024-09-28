@@ -34,20 +34,9 @@ def manage_stock_inventory(stock_prices, accounts, eligible_accounts, eligible_f
                     excesses[excess_account] -= transfer_quantity
                     remaining_demand -= transfer_quantity
             
-            if remaining_demand > 0:
-                for excess_account, excess_quantity in excesses.items():
-                    if remaining_demand <= 0:
-                        break
-                    
-                    if excess_quantity > 0:
-                        transfer_quantity = min(remaining_demand, excess_quantity)
-                        movements.append((stock_id, excess_account, demand_account, transfer_quantity))
-                        excesses[excess_account] -= transfer_quantity
-                        remaining_demand -= transfer_quantity
-
         for excess_account, excess_quantity in excesses.items():
-            if excess_quantity > 0 and account_dict[excess_account][0] == "CUSTODY":
-                triparty_account = next((a for a in eligible_accounts_dict[stock_id] if account_dict[a][0] == "TRIPARTY"), None)
+            if excess_quantity > 0:
+                triparty_account = next((dst for src, dst in eligible_flows_dict[stock_id] if src == excess_account and dst != demand_account), None)
                 if triparty_account:
                     movements.append((stock_id, excess_account, triparty_account, excess_quantity))
                     excesses[excess_account] = 0

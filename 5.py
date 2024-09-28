@@ -37,6 +37,7 @@ top_16_fill_percentages = sorted_fill_percentages[:16]
 
 # Reshape into a 4x4 grid
 sorted_fill_percentages_grid = np.reshape(top_16_fill_percentages, (4, 4))
+print(sorted_fill_percentages_grid)
 
 # Correct answers provided by the user
 correct_answers = ['D', 'A', 'D', 'C']
@@ -49,10 +50,14 @@ score = 0
 
 for i in range(4):  # For each question
     filled_answers = np.where(sorted_fill_percentages_grid[i] > 75)[0]  # Get indices of definite answers
-    if len(filled_answers) == 1:  # Only consider if there's exactly one definite answer
-        selected_answer = index_to_answer[filled_answers[0]]
-        if selected_answer == correct_answers[i]:
-            score += 1
+    # if len(filled_answers) == 1:  # Only consider if there's exactly one definite answer
+    selected_answer = index_to_answer[filled_answers[0]]
+    print(selected_answer)
+    print(correct_answers[i])
+    if selected_answer == correct_answers[i]:
+        print(selected_answer)
+        print(correct_answers[i])
+        score += 1
 
 print("Score:", score)
 

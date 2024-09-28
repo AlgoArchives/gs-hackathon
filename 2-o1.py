@@ -1,42 +1,82 @@
 # Read number of stocks
-n_stocks = int(input())
+n_stocks = int(input().strip())
 stocks = {}
 for _ in range(n_stocks):
-    stock_id, price = input().strip().split(',')
-    stocks[stock_id] = float(price)
+    while True:
+        line = input().strip()
+        if not line:
+            continue
+        parts = line.split(',')
+        if len(parts) != 2:
+            continue
+        stock_id, price = parts
+        stocks[stock_id] = float(price)
+        break
 
 # Read accounts
-n_accounts = int(input())
+n_accounts = int(input().strip())
 accounts = {}
 for _ in range(n_accounts):
-    account_id, account_type, parent_account = input().strip().split(',')
-    accounts[account_id] = {
-        'type': account_type,
-        'parent': parent_account
-    }
+    while True:
+        line = input().strip()
+        if not line:
+            continue
+        parts = line.split(',')
+        if len(parts) != 3:
+            continue
+        account_id, account_type, parent_account = parts
+        accounts[account_id] = {
+            'type': account_type,
+            'parent': parent_account
+        }
+        break
 
 # Read eligible accounts per stock
-n_eligible_accounts = int(input())
+n_eligible_accounts = int(input().strip())
 eligible_accounts = {}
 for _ in range(n_eligible_accounts):
-    stock_id, account_id = input().strip().split(',')
-    eligible_accounts.setdefault(stock_id, set()).add(account_id)
+    while True:
+        line = input().strip()
+        if not line:
+            continue
+        parts = line.split(',')
+        if len(parts) != 2:
+            continue
+        stock_id, account_id = parts
+        eligible_accounts.setdefault(stock_id, set()).add(account_id)
+        break
 
 # Read eligible flows per stock
-n_eligible_flows = int(input())
+n_eligible_flows = int(input().strip())
 eligible_flows = {}
 for _ in range(n_eligible_flows):
-    stock_id, source_id, dest_id = input().strip().split(',')
-    eligible_flows.setdefault(stock_id, set()).add((source_id, dest_id))
+    while True:
+        line = input().strip()
+        if not line:
+            continue
+        parts = line.split(',')
+        if len(parts) != 3:
+            continue
+        stock_id, source_id, dest_id = parts
+        eligible_flows.setdefault(stock_id, set()).add((source_id, dest_id))
+        break
 
 # Read balances
-n_balances = int(input())
+n_balances = int(input().strip())
 balances = {}
 for _ in range(n_balances):
-    stock_id, account_id, quantity = input().strip().split(',')
-    quantity = int(quantity)
-    balances.setdefault(stock_id, {}).setdefault(account_id, 0)
-    balances[stock_id][account_id] += quantity
+    while True:
+        line = input().strip()
+        if not line:
+            continue
+        parts = line.split(',')
+        if len(parts) != 3:
+            continue
+        stock_id, account_id, quantity = parts
+        quantity = int(quantity)
+        balances.setdefault(stock_id, {}).setdefault(account_id, 0)
+        balances[stock_id][account_id] += quantity
+        break
 
 # Prepare movements
 movements = []
